@@ -1,0 +1,14 @@
+{
+  "ids": {
+    "Todo": 6
+  },
+  "models": {
+    "Todo": {
+      "1": "{\"title\":\"Learning Loopback4\",\"desc\":\"Finish soon\",\"isComplete\":true,\"id\":1}",
+      "2": "{\"title\":\"Learning Loopback4\",\"desc\":\"Finish soon\",\"isComplete\":true,\"id\":2}",
+      "3": "{\"title\":\"Learn PostgreSQL\",\"desc\":\"Finish late\",\"isComplete\":true,\"id\":3}",
+      "4": "{\"title\":\"New tittle\",\"desc\":\"test\",\"isComplete\":true,\"id\":4}",
+      "5": "{\"title\":\"New tittle\",\"desc\":\"test\",\"isComplete\":true,\"id\":5}"
+    }
+  }
+}
