@@ -1,27 +1,17 @@
-import { privateDecrypt } from 'crypto';
 import { TournamentRepository } from './../repositories/tournament.repository';
-import {injectable, /* inject, */ BindingScope, inject} from '@loopback/core';
-import { getModelSchemaRef, requestBody } from '@loopback/rest';
+import {injectable, /* inject, */ BindingScope} from '@loopback/core';
 import { Tournament } from '../models';
-
+import { repository } from '@loopback/repository';
 
 @injectable({scope: BindingScope.TRANSIENT})
 export class TournamentService {
-  constructor(@inject('TournamentRepository')
-  private tourRepo: TournamentRepository) {}
-  async create(
-    @requestBody({
-      content: {
-        'application/json': {
-          schema: getModelSchemaRef(Tournament, {
-            title: 'NewTournament',
-            exclude: ['id'],
-          }),
-        },
-      },
-    })
-    tournament: Omit<Tournament, 'id'>,
-  ): Promise<Tournament> {
-    return this.tourRepo.create(tournament);
+  constructor(
+    @repository('TournamentRepository')
+    public tournamentRepository: TournamentRepository,
+  ) {}
+
+  async getAll(): Promise<Tournament[]>{
+    const tournaments: Tournament[] = await this.tournamentRepository.find();
+    return tournaments;
   }
 }

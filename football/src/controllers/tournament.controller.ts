@@ -1,3 +1,4 @@
+import { TournamentService } from './../services/tournament.service';
 import {
   Count,
   CountSchema,
@@ -20,14 +21,13 @@ import {
 import {Tournament} from '../models';
 import {TournamentRepository} from '../repositories';
 import { inject } from '@loopback/core';
-import { TournamentService } from '../services';
 
 export class TournamentController {
   constructor(
     @repository(TournamentRepository)
     public tournamentRepository : TournamentRepository,
     @inject('services.TournamentService')
-    public tournamentService: TournamentService,
+    public tournamentService : TournamentService
   ) {}
 
   @post('/tournaments')
@@ -35,26 +35,21 @@ export class TournamentController {
     description: 'Tournament model instance',
     content: {'application/json': {schema: getModelSchemaRef(Tournament)}},
   })
-  async createTournament(
-    @requestBody() tournament: Tournament,
+  async create(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Tournament, {
+            title: 'NewTournament',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    tournament: Omit<Tournament, 'id'>,
   ): Promise<Tournament> {
-    return this.tournamentService.create(tournament);
+    return this.tournamentRepository.create(tournament);
   }
-  // async create(
-  //   @requestBody({
-  //     content: {
-  //       'application/json': {
-  //         schema: getModelSchemaRef(Tournament, {
-  //           title: 'NewTournament',
-  //           exclude: ['id'],
-  //         }),
-  //       },
-  //     },
-  //   })
-  //   tournament: Omit<Tournament, 'id'>,
-  // ): Promise<Tournament> {
-  //   return this.tournamentRepository.create(tournament);
-  // }
 
   @get('/tournaments/count')
   @response(200, {
@@ -79,11 +74,15 @@ export class TournamentController {
       },
     },
   })
-  async find(
-    @param.filter(Tournament) filter?: Filter<Tournament>,
-  ): Promise<Tournament[]> {
-    return this.tournamentRepository.find(filter);
+  async getAllTournaments(): Promise<Tournament[]> {
+    const tournaments: Tournament[] = await this.tournamentService.getAll();
+    return tournaments;
   }
+  // async find(
+  //   @param.filter(Tournament) filter?: Filter<Tournament>,
+  // ): Promise<Tournament[]> {
+  //   return this.tournamentRepository.find(filter);
+  // }
 
   @patch('/tournaments')
   @response(200, {

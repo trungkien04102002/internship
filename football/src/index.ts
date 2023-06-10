@@ -1,12 +1,11 @@
 import {ApplicationConfig, FootballApplication} from './application';
-
+import { TournamentService } from './services';
 export * from './application';
-
 export async function main(options: ApplicationConfig = {}) {
   const app = new FootballApplication(options);
   await app.boot();
   await app.start();
-
+  app.bind('services.TournamentService').toClass(TournamentService)
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
   console.log(`Try ${url}/ping`);
