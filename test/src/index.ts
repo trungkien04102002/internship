@@ -1,4 +1,5 @@
 import {ApplicationConfig, TestApplication} from './application';
+import { TeamRepository } from './repositories';
 
 export * from './application';
 
@@ -6,7 +7,7 @@ export async function main(options: ApplicationConfig = {}) {
   const app = new TestApplication(options);
   await app.boot();
   await app.start();
-
+  app.repository(TeamRepository);
   const url = app.restServer.url;
   console.log(`Server is running at ${url}`);
   console.log(`Try ${url}/ping`);
@@ -37,3 +38,7 @@ if (require.main === module) {
     process.exit(1);
   });
 }
+
+
+
+

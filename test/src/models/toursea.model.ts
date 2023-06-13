@@ -38,6 +38,7 @@ export class Toursea extends Entity {
     required: true,
   })
   seasonId: number;
+  seaId: any;
 
 }
 
